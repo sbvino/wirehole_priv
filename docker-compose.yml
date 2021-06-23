@@ -29,7 +29,7 @@ services:
     environment:
       - PUID=1000
       - PGID=1000
-      - TZ=America/New_York # Change to your timezone
+      - TZ=Asia/Kolkata # Change to your timezone
       - SERVERPORT=51820
       #- SERVERURL=my.ddns.net #optional - For use with DDNS (Uncomment to use)
       - PEERS=1 # How many peers to generate for you (clients)
@@ -55,14 +55,14 @@ services:
   pihole:
     depends_on: [unbound]
     container_name: pihole
-    image: pihole/pihole:latest
+    build: .
     restart: unless-stopped
     hostname: pihole
     dns:
       - 127.0.0.1
       - 10.2.0.200 # Points to unbound
     environment:
-      TZ: "America/New_York"
+      TZ: "Asia/Kolkata"
       WEBPASSWORD: "" # Blank password - Can be whatever you want.
       ServerIP: 10.1.0.100 # Internal IP of pihole
       DNS1: 10.2.0.200 # Unbound IP
@@ -71,6 +71,7 @@ services:
     volumes:
       - "./etc-pihole/:/etc/pihole/"
       - "./etc-dnsmasq.d/:/etc/dnsmasq.d/"
+      - "./etc-pihole-updatelists/:/etc/pihole-updatelists/"
     # Recommended but not required (DHCP needs NET_ADMIN)
     #   https://github.com/pi-hole/docker-pi-hole#note-on-capabilities
     cap_add:
